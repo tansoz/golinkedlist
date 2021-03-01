@@ -50,6 +50,38 @@ func (node *Node) GetData() unsafe.Pointer {
 	return node.data
 }
 
+type direct int8
+
+const (
+	FORWARD direct = iota
+	BACKWARD
+)
+
+/* for-range you want direction and begin node */
+func (node *Node) Iterator(flag direct) chan *Node {
+
+	nodeChan := make(chan *Node)
+
+	go func() {
+		for currentNode := node; currentNode != nil; {
+			nodeChan <- currentNode
+
+			switch flag {
+
+			case FORWARD:
+				currentNode = currentNode.GetNextNode()
+			case BACKWARD:
+				currentNode = currentNode.GetPrevNode()
+			default:
+				currentNode = nil
+			}
+		}
+		close(nodeChan)
+	}()
+
+	return nodeChan
+}
+
 /* Swap two nodes position */
 func (node *Node) Swap(b *Node) {
 

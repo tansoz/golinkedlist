@@ -13,10 +13,15 @@ type LinkedList struct {
 /* Init a linked-list */
 func NewLinkedList() *LinkedList {
 
-	return &LinkedList{
-		head: nil,
-		tail: nil,
-	}
+	return (&LinkedList{}).init()
+}
+
+func (linkedList *LinkedList) init() *LinkedList {
+
+	linkedList.head = nil
+	linkedList.tail = nil
+
+	return linkedList
 }
 
 func (linkedList *LinkedList) GetHeadNode() *Node {
@@ -152,6 +157,43 @@ func (linkedList *LinkedList) Move(node *Node, target *Node) {
 	}
 }
 
+/* Merge two linked-lists */
+func (linkedList *LinkedList) Merge(list *LinkedList) {
+
+	if list.head != nil && list.tail != nil {
+		list.head.setPrevNode(linkedList.tail)
+		linkedList.tail.setNextNode(list.head)
+		linkedList.tail = list.GetTailNode()
+	}
+
+	list.head = linkedList.GetHeadNode()
+	list.tail = linkedList.GetTailNode()
+}
+
+/* Can use for-range iteration all nodes in the linked-list */
+/*
+
+Usage:
+	for node := range linkedList.Items(){
+		fmt.Println(node)
+	}
+
+*/
+func (linkedList *LinkedList) Items() chan *Node {
+
+	return linkedList.GetHeadNode().Iterator(FORWARD)
+}
+
+/* all of  */
+func (linkedList *LinkedList) ToArray() []unsafe.Pointer {
+
+	var arr []unsafe.Pointer
+	for node := range linkedList.Items() {
+		arr = append(arr, node.GetData())
+	}
+	return arr
+}
+
 /* Show the linked-list */
 func (linkedList *LinkedList) String() string {
 
@@ -166,7 +208,7 @@ func (linkedList *LinkedList) String() string {
 	return s + "]"
 }
 
-/* Sort the link */
+/* Sort the linked-list */
 /* Must be from the from node to the to node. continuously. */
 /*
 
@@ -175,7 +217,7 @@ original: 3->1->5->2->4
 1->3->5->2->4
 2->1->3->5->4
 1->2->3->5->4
-1->2->3->4->4
+1->2->3->4->5
 
 */
 func (linkedList *LinkedList) RangeSort(fn func(a unsafe.Pointer, b unsafe.Pointer) int, from *Node, to *Node) {
@@ -187,13 +229,18 @@ func (linkedList *LinkedList) RangeSort(fn func(a unsafe.Pointer, b unsafe.Point
 		tmp   *Node
 	)
 
+	if from == nil && to == nil {
+		from = linkedList.GetHeadNode()
+		to = linkedList.GetTailNode()
+	}
+
 	pivot = from
 	low = from
 	high = from
 
-	if low != nil && high != nil && from != to {
+	if from != nil && from != to {
 
-		for high != nil {
+		for high != nil && pivot != nil {
 
 			if high != pivot && fn(pivot.GetData(), high.GetData()) < 0 {
 				tmp = high.GetPrevNode()
@@ -207,14 +254,15 @@ func (linkedList *LinkedList) RangeSort(fn func(a unsafe.Pointer, b unsafe.Point
 			high = high.GetNextNode()
 		}
 
-		//fmt.Println(*(*int)(low.GetData()),*(*int)(pivot.GetData()),*(*int)(high.GetData()))
+		if pivot != nil { // Prevent the pivot is nil
 
-		if pivot != low && pivot.GetPrevNode() != nil {
-			linkedList.RangeSort(fn, low, pivot.GetPrevNode())
-		}
+			if pivot != low && pivot.GetPrevNode() != nil {
+				linkedList.RangeSort(fn, low, pivot.GetPrevNode())
+			}
 
-		if pivot != high && pivot.GetNextNode() != nil {
-			linkedList.RangeSort(fn, pivot.GetNextNode(), high)
+			if pivot != high && pivot.GetNextNode() != nil {
+				linkedList.RangeSort(fn, pivot.GetNextNode(), high)
+			}
 		}
 	}
 

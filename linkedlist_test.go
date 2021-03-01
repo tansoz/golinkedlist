@@ -8,14 +8,21 @@ import (
 
 func TestLinkedList_String(t *testing.T) {
 
-	a := []int{6, 5, 4, 2, 1, 8, 7, 3, 9}
+	a := []int{1, 2, 3, 4, 5, 6}
 	ll := NewLinkedList()
 
-	for i := range a {
+	for i := range a[0:5] {
 		ll.HeadInsert(unsafe.Pointer(&a[i]))
 	}
 
-	fmt.Println(ll)
+	ll.TailInsert(unsafe.Pointer(&a[5]))
+
+	ll.ForEach(func(node *Node) bool {
+		fmt.Println(*(*int)(node.data))
+		return false
+	})
+
+	/*fmt.Println(ll)
 
 	ll.Reverse()
 
@@ -31,17 +38,21 @@ func TestLinkedList_String(t *testing.T) {
 	ll.ForEach(func(node *Node) bool {
 		fmt.Println(*(*int)(node.data))
 		return false
-	})
-
+	})*/
+	fmt.Println("---------------------------")
 	ll.RangeSort(func(a unsafe.Pointer, b unsafe.Pointer) int {
 		fmt.Println(*(*int)(a), *(*int)(b))
-		return *(*int)(a) - *(*int)(b)
-		//return -1
-	}, ll.head, ll.tail)
+		return *(*int)(b) - *(*int)(a)
+	}, nil, nil)
 	fmt.Println("---------------------------")
+
 	ll.ForEach(func(node *Node) bool {
 		fmt.Println(*(*int)(node.data))
 		return false
 	})
+
+	for i := range ll.Items() {
+		fmt.Println(*(*int)(i.GetData()))
+	}
 
 }
