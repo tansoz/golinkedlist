@@ -184,6 +184,27 @@ func (linkedList *LinkedList) Items() chan *Node {
 	return linkedList.GetHeadNode().Iterator(FORWARD)
 }
 
+/* Get node by index */
+func (linkedList *LinkedList) Get(index int64) *Node {
+
+	i := int64(0)
+	for n := range linkedList.Items() {
+		if index == i {
+			return n
+		}
+	}
+	return nil
+}
+
+/* Set node data by index */
+func (linkedList *LinkedList) Set(index int64, data unsafe.Pointer) unsafe.Pointer {
+
+	if n := linkedList.Get(index); n != nil {
+		return n.SetData(data)
+	}
+	return nil
+}
+
 /* all of  */
 func (linkedList *LinkedList) ToArray() []unsafe.Pointer {
 

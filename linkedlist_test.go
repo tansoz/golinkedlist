@@ -3,6 +3,7 @@ package golinkedlist
 import (
 	"fmt"
 	"testing"
+	"time"
 	"unsafe"
 )
 
@@ -53,6 +54,28 @@ func TestLinkedList_String(t *testing.T) {
 
 	for i := range ll.Items() {
 		fmt.Println(*(*int)(i.GetData()))
+	}
+
+}
+
+func TestThreadSafe(t *testing.T) {
+
+	ll := NewLinkedList()
+	a := ""
+	ll.HeadInsert(unsafe.Pointer(&a))
+	go func() {
+
+		for {
+			a := time.Now().String()
+			ll.GetHeadNode().SetData(unsafe.Pointer(&a))
+		}
+
+	}()
+
+	for {
+
+		fmt.Println(*(*string)(ll.GetHeadNode().GetData()))
+
 	}
 
 }

@@ -108,6 +108,15 @@ APIs:
         ```go
         linkedList.ToArray()
         ```
+    - func (linkedList *LinkedList) Get(index int64, data unsafe.Pointer) unsafe.Pointer
+        ```go
+        node := linkedList.Get(5)
+        ```
+    - func (linkedList *LinkedList) Set(index int64, data unsafe.Pointer) unsafe.Pointer
+        ```go
+        a := 1
+        linkedList.Set(0,unsafe.Pointer(&a))
+        ```
 - Node
 
     - func NewNode(data unsafe.Pointer) *Node
