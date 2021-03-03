@@ -124,6 +124,15 @@ APIs:
         a := 1
         linkedList.Set(0,unsafe.Pointer(&a))
         ```
+    - func (linkedList *LinkedList) GetCyclePrevNode(node *Node) *Node
+        ```go
+        linkedList.GetCyclePrevNode(node)
+        ```
+    - func (linkedList *LinkedList) GetCycleNextNode(node *Node) *Node
+        ```go
+        linkedList.GetCycleNextNode(node)
+        ```
+      
 - Node
 
     - func NewNode(data unsafe.Pointer) *Node

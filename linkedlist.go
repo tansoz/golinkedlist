@@ -297,3 +297,31 @@ func (linkedList *LinkedList) RangeSort(fn func(a unsafe.Pointer, b unsafe.Point
 	}
 
 }
+
+/* simulate a cycle linked-list to get the previous node */
+func (linkedList *LinkedList) GetCyclePrevNode(node *Node) *Node {
+
+	if node != nil {
+		if node == linkedList.GetHeadNode() {
+			return linkedList.GetTailNode()
+		} else {
+			return node.GetPrevNode()
+		}
+	}
+
+	return nil
+}
+
+/* simulate a cycle linked-list to get the next node */
+func (linkedList *LinkedList) GetCycleNextNode(node *Node) *Node {
+
+	if node != nil {
+		if node == linkedList.GetTailNode() {
+			return linkedList.GetHeadNode()
+		} else {
+			return node.GetNextNode()
+		}
+	}
+
+	return nil
+}
