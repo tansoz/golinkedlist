@@ -229,6 +229,11 @@ func (linkedList *LinkedList) String() string {
 	return s + "]"
 }
 
+/* The function is basic compare function for the function RangeSort */
+func (linkedList *LinkedList) basicCompare(a unsafe.Pointer, b unsafe.Pointer) int {
+	return *(*int)(b) - *(*int)(a)
+}
+
 /* Sort the linked-list */
 /* Must be from the from node to the to node. continuously. */
 /*
@@ -250,6 +255,10 @@ func (linkedList *LinkedList) RangeSort(fn func(a unsafe.Pointer, b unsafe.Point
 		tmp   *Node
 	)
 
+	if fn == nil { // if the compare function Fn is nil, use module default compare function
+		fn = linkedList.basicCompare
+	}
+
 	if from == nil && to == nil {
 		from = linkedList.GetHeadNode()
 		to = linkedList.GetTailNode()
@@ -259,7 +268,7 @@ func (linkedList *LinkedList) RangeSort(fn func(a unsafe.Pointer, b unsafe.Point
 	low = from
 	high = from
 
-	if from != nil && from != to {
+	if from != nil && from != to { // from and to not the same node
 
 		for high != nil && pivot != nil {
 

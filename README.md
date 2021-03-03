@@ -72,11 +72,18 @@ APIs:
         linkedList.Move(node,targetNode)
         ```
     - func (linkedList *LinkedList) RangeSort(fn func(a unsafe.Pointer, b unsafe.Pointer) int, from *Node, to *Node)
+        > parameter fn can use nil
         ```go
         // 5 6 2 1 3 4
         linkedList.RangeSort(function(a unsafe.Pointer, b unsafe.Pointer){
+            return *(int)(b) - *(int)(a)
+        }int,nil,nil)
+        // 1 2 3 4 5 6
+        linkedList.RangeSort(function(a unsafe.Pointer, b unsafe.Pointer){
             return *(int)(a) - *(int)(b)
         }int,nil,nil)
+        // 6 5 4 3 2 1
+        linkedList.RangeSort(nil,nil,nil)
         // 1 2 3 4 5 6
         ```
     - func (linkedList *LinkedList) RemoveNode(node *Node)
