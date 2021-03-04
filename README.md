@@ -14,9 +14,9 @@ APIs:
         linkedList := NewLinkedList()       // new a LinkedList object  
         ```
 
-    - func (linkedList *LinkedList) ForEach(fn func(node *Node) bool) *Node
+    - func (linkedList *LinkedList) ForEach(fn func(node *Node) bool)
         ```go
-        node := linkedList.ForEach(func(node *Node)bool{
+        linkedList.ForEach(func(node *Node, index int64)bool{
             return [condition]
         })
         ```
@@ -131,6 +131,10 @@ APIs:
     - func (linkedList *LinkedList) GetCycleNextNode(node *Node) *Node
         ```go
         linkedList.GetCycleNextNode(node)
+        ```
+    - func (linkedList *LinkedList) ReplaceNode(replaceNode *Node, targetNode *Node) *Node
+        ```go
+        linkedList.ReplaceNode(node1,node2)
         ```
       
 - Node

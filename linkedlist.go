@@ -90,15 +90,20 @@ func (linkedList *LinkedList) RemoveNode(node *Node) {
 	}
 }
 
-/* Foreach all node of the linked-list */
-func (linkedList *LinkedList) ForEach(fn func(node *Node) bool) *Node {
+/* Replace the node in the linked-list */
+func (linkedList *LinkedList) ReplaceNode(replaceNode *Node, targetNode *Node) {
+	linkedList.InsertNode(targetNode.GetPrevNode(), targetNode.GetNextNode(), replaceNode)
+}
 
-	for currentNode := linkedList.head; currentNode != nil; currentNode = currentNode.GetNextNode() {
-		if fn(currentNode) {
-			return currentNode
+/* Foreach all node of the linked-list */
+func (linkedList *LinkedList) ForEach(fn func(node *Node, index int64) bool) {
+	index := int64(0)
+	for node := range linkedList.Items() {
+		if !fn(node, index) {
+			break
 		}
+		index++
 	}
-	return nil
 }
 
 /* Reverse the linked-list node */
@@ -120,10 +125,9 @@ func (linkedList *LinkedList) Len() int64 {
 
 	count := int64(0)
 
-	linkedList.ForEach(func(node *Node) bool {
-		count += 1
-		return false
-	})
+	for range linkedList.Items() {
+		count++
+	}
 	return count
 }
 
@@ -205,7 +209,7 @@ func (linkedList *LinkedList) Set(index int64, data unsafe.Pointer) unsafe.Point
 	return nil
 }
 
-/* all of  */
+/* all of nodes to the unsafe.Pointer array */
 func (linkedList *LinkedList) ToArray() []unsafe.Pointer {
 
 	var arr []unsafe.Pointer
@@ -220,11 +224,9 @@ func (linkedList *LinkedList) String() string {
 
 	s := fmt.Sprintf("LinkedLst(%d)[\n", linkedList.Len())
 
-	linkedList.ForEach(func(node *Node) bool {
-
+	for node := range linkedList.Items() {
 		s += "\t" + node.String() + "\n"
-		return false
-	})
+	}
 
 	return s + "]"
 }
