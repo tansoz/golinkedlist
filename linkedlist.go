@@ -196,6 +196,7 @@ func (linkedList *LinkedList) Get(index int64) *Node {
 		if index == i {
 			return n
 		}
+		i++
 	}
 	return nil
 }
