@@ -136,6 +136,15 @@ APIs:
         ```go
         linkedList.ReplaceNode(node1,node2)
         ```
+    - func (linkedList *LinkedList) ReplaceNode(replaceNode *Node, targetNode *Node) *Node
+        ```go
+        linkedList.ReplaceNode(node1,node2)
+        ```
+    - func (linkedList *LinkedList) ReplaceNode(replaceNode *Node, targetNode *Node) *Node
+        ```go
+        linkedList.ReplaceNode(node1,node2)
+        ```
+    
       
 - Node
 
