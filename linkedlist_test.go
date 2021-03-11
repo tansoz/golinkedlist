@@ -19,7 +19,7 @@ func TestLinkedList_String(t *testing.T) {
 
 	//ll.TailInsert(unsafe.Pointer(&a[5]))
 
-	ll.ForEach(func(node *Node) bool {
+	ll.ForEach(func(node *Node, index int64) bool {
 		fmt.Println(*(*int)(node.data))
 		return false
 	})
@@ -49,10 +49,18 @@ func TestLinkedList_String(t *testing.T) {
 	ll.RangeSort(nil, nil, nil)
 	fmt.Println("---------------------------")
 
-	ll.ForEach(func(node *Node) bool {
+	ll.ForEach(func(node *Node, index int64) bool {
 		fmt.Println("RESULT:", *(*int)(node.data))
-		return false
+		return true
 	})
+
+	for i := range ll.Items() {
+		fmt.Println(*(*int)(i.GetData()))
+	}
+
+	fmt.Println("-----------------------------")
+
+	ll.Shuffle(0)
 
 	for i := range ll.Items() {
 		fmt.Println(*(*int)(i.GetData()))

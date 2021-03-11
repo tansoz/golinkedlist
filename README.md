@@ -31,7 +31,7 @@ APIs:
         node := linkedList.GetTailNode()
         ```
 
-    - func (linkedList *LinkedList) HeadInsert(data unsafe.Pointer)
+    - func (linkedList *LinkedList) HeadInsert(data unsafe.Pointer) *Node
         ```go
         // 1 2 3 4 5
         a := 6
@@ -45,7 +45,7 @@ APIs:
         linkedList.Insert(nil,linkedList.GetHeadNode(),unsafe.Pointer(&a))
         ```
   
-    - func (linkedList *LinkedList) InsertNode(prevNode *Node, nextNode *Node, node *Node)
+    - func (linkedList *LinkedList) InsertNode(prevNode *Node, nextNode *Node, node *Node) *LinkedList
         ```go
         a := 123
         node := NewNode(&a)
@@ -67,7 +67,7 @@ APIs:
         ```go
         l1.Merge(l2)
         ```
-    - func (linkedList *LinkedList) Move(node *Node, target *Node)
+    - func (linkedList *LinkedList) Move(node *Node, target *Node) *LinkedList
         ```go
         linkedList.Move(node,targetNode)
         ```
@@ -86,11 +86,11 @@ APIs:
         linkedList.RangeSort(nil,nil,nil)
         // 1 2 3 4 5 6
         ```
-    - func (linkedList *LinkedList) RemoveNode(node *Node)
+    - func (linkedList *LinkedList) RemoveNode(node *Node) *Node
         ```go
         linkedList.RemoveNode(node)
         ```
-    - func (linkedList *LinkedList) Reverse()
+    - func (linkedList *LinkedList) Reverse()  *LinkedList
         ```go
         // 5 2 3 1 4
         linkedList.Reverse()
@@ -100,11 +100,11 @@ APIs:
         ```go
         linkedList.String()
         ```
-    - func (linkedList *LinkedList) Swap(a *Node, b *Node) (*Node, *Node)
+    - func (linkedList *LinkedList) Swap(a *Node, b *Node) (*Node, *Node) *Node
         ```go
         linkedList.Swap(node1,node2)
         ```
-    - func (linkedList *LinkedList) TailInsert(data unsafe.Pointer)
+    - func (linkedList *LinkedList) TailInsert(data unsafe.Pointer) *Node
         ```go
         // 1 2 3 4 5
         a := 6
@@ -136,17 +136,27 @@ APIs:
         ```go
         linkedList.ReplaceNode(node1,node2)
         ```
-    - func (linkedList *LinkedList) Append(data unsafe.Pointer)
+    - func (linkedList *LinkedList) Append(data unsafe.Pointer) *Node
         ```go
         // 1->2->3
         linkedList.Append(data) // Assuming the value of data is 4
         // 1->2->3->4
         ```
-    - func (linkedList *LinkedList) Prepend(data unsafe.Pointer)
+    - func (linkedList *LinkedList) Prepend(data unsafe.Pointer) *Node
         ```go
         // 1->2->3
         linkedList.Prepend(data)    // Assuming the value of data is 4
         // 4->1->2->3
+        ```
+    - func (linkedList *LinkedList)Clone() *LinkedList
+        ```go
+        newLinkedList := linkedList.Clone()
+        ```
+    - func (linkedList *LinkedList)Shuffle(seed int64)
+        ```go
+        // 1->2->3->4->5
+        linkedList.Shuffle(1)
+        // 3->4->2->5->1
         ```
     
       
@@ -215,6 +225,7 @@ APIs:
 - Thread safe
 - ~~Merge Linked-list~~
 - ~~To []unsafe.Pointer~~
+- Shuffle
 
 ### Some functions wait for me to fixed:
 

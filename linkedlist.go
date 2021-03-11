@@ -2,6 +2,7 @@ package golinkedlist
 
 import (
 	"fmt"
+	"math/rand"
 	"unsafe"
 )
 
@@ -33,7 +34,7 @@ func (linkedList *LinkedList) GetTailNode() *Node {
 }
 
 /* Insert node into thr linked-list */
-func (linkedList *LinkedList) InsertNode(prevNode *Node, nextNode *Node, node *Node) {
+func (linkedList *LinkedList) InsertNode(prevNode *Node, nextNode *Node, node *Node) *LinkedList {
 
 	node.setPrevNode(prevNode)
 	node.setNextNode(nextNode)
@@ -51,6 +52,7 @@ func (linkedList *LinkedList) InsertNode(prevNode *Node, nextNode *Node, node *N
 		prevNode.next = node
 		nextNode.prev = node
 	}
+	return linkedList
 }
 
 /* Insert the data to the linked-list */
@@ -64,17 +66,17 @@ func (linkedList *LinkedList) Insert(prevNode *Node, nextNode *Node, data unsafe
 }
 
 /* New insert will be the linked-list head */
-func (linkedList *LinkedList) HeadInsert(data unsafe.Pointer) {
-	linkedList.Insert(nil, linkedList.head, data)
+func (linkedList *LinkedList) HeadInsert(data unsafe.Pointer) *Node {
+	return linkedList.Insert(nil, linkedList.head, data)
 }
 
 /* New insert will be the linked-list tail */
-func (linkedList *LinkedList) TailInsert(data unsafe.Pointer) {
-	linkedList.Insert(linkedList.tail, nil, data)
+func (linkedList *LinkedList) TailInsert(data unsafe.Pointer) *Node {
+	return linkedList.Insert(linkedList.tail, nil, data)
 }
 
 /* Remove the node of the linked-list */
-func (linkedList *LinkedList) RemoveNode(node *Node) {
+func (linkedList *LinkedList) RemoveNode(node *Node) *Node {
 
 	if node == linkedList.head {
 		linkedList.head = node.GetNextNode()
@@ -88,11 +90,13 @@ func (linkedList *LinkedList) RemoveNode(node *Node) {
 	if node.GetNextNode() != nil {
 		node.GetNextNode().setPrevNode(node.GetPrevNode())
 	}
+	return node
 }
 
 /* Replace the node in the linked-list */
-func (linkedList *LinkedList) ReplaceNode(replaceNode *Node, targetNode *Node) {
+func (linkedList *LinkedList) ReplaceNode(replaceNode *Node, targetNode *Node) *LinkedList {
 	linkedList.InsertNode(targetNode.GetPrevNode(), targetNode.GetNextNode(), replaceNode)
+	return linkedList
 }
 
 /* Foreach all node of the linked-list */
@@ -107,7 +111,7 @@ func (linkedList *LinkedList) ForEach(fn func(node *Node, index int64) bool) {
 }
 
 /* Reverse the linked-list node */
-func (linkedList *LinkedList) Reverse() {
+func (linkedList *LinkedList) Reverse() *LinkedList {
 
 	var currNode *Node
 
@@ -118,6 +122,8 @@ func (linkedList *LinkedList) Reverse() {
 	currNode = linkedList.head
 	linkedList.head = linkedList.tail
 	linkedList.tail = currNode
+
+	return linkedList
 }
 
 /* Count the length of the linked-list */
@@ -152,13 +158,14 @@ func (linkedList *LinkedList) Swap(a *Node, b *Node) (*Node, *Node) {
 }
 
 /* Move the node from a place to the front of the target node in linked-list */
-func (linkedList *LinkedList) Move(node *Node, target *Node) {
+func (linkedList *LinkedList) Move(node *Node, target *Node) *LinkedList {
 
 	if node != nil && target != nil && node != target {
 
 		linkedList.RemoveNode(node)                               // Remove the node from the linked-list
 		linkedList.InsertNode(target.GetPrevNode(), target, node) // Then, insert it into the linked-list
 	}
+	return linkedList
 }
 
 /* Merge two linked-lists */
@@ -330,11 +337,33 @@ func (linkedList *LinkedList) GetCycleNextNode(node *Node) *Node {
 }
 
 /* Just a function tailInsert */
-func (linkedList *LinkedList) Append(data unsafe.Pointer) {
-	linkedList.TailInsert(data)
+func (linkedList *LinkedList) Append(data unsafe.Pointer) *Node {
+	return linkedList.TailInsert(data)
 }
 
 /* Just a function headInsert */
-func (linkedList *LinkedList) Prepend(data unsafe.Pointer) {
-	linkedList.HeadInsert(data)
+func (linkedList *LinkedList) Prepend(data unsafe.Pointer) *Node {
+	return linkedList.HeadInsert(data)
+}
+
+/* clone whole linked-list but data will not be copy */
+func (linkedList *LinkedList) Clone() *LinkedList {
+	newLinkedList := NewLinkedList()
+	for i := range linkedList.Items() {
+		newLinkedList.Append(i.GetData())
+	}
+	return newLinkedList
+}
+
+/* shuffle all nodes of the linked-list */
+func (linkedList *LinkedList) Shuffle(seed int64) {
+
+	rand.Seed(seed)
+
+	linkedList.RangeSort(func(a unsafe.Pointer, b unsafe.Pointer) int {
+		if rand.Intn(4)%3 == 0 {
+			return -1
+		}
+		return 1
+	}, linkedList.head, linkedList.tail)
 }
