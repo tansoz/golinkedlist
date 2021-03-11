@@ -136,13 +136,17 @@ APIs:
         ```go
         linkedList.ReplaceNode(node1,node2)
         ```
-    - func (linkedList *LinkedList) ReplaceNode(replaceNode *Node, targetNode *Node) *Node
+    - func (linkedList *LinkedList) Append(data unsafe.Pointer)
         ```go
-        linkedList.ReplaceNode(node1,node2)
+        // 1->2->3
+        linkedList.Append(data) // Assuming the value of data is 4
+        // 1->2->3->4
         ```
-    - func (linkedList *LinkedList) ReplaceNode(replaceNode *Node, targetNode *Node) *Node
+    - func (linkedList *LinkedList) Prepend(data unsafe.Pointer)
         ```go
-        linkedList.ReplaceNode(node1,node2)
+        // 1->2->3
+        linkedList.Prepend(data)    // Assuming the value of data is 4
+        // 4->1->2->3
         ```
     
       
