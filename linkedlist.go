@@ -328,3 +328,13 @@ func (linkedList *LinkedList) GetCycleNextNode(node *Node) *Node {
 
 	return nil
 }
+
+/* Just a function tailInsert */
+func (linkedList *LinkedList) Append(data unsafe.Pointer) {
+	linkedList.TailInsert(data)
+}
+
+/* Just a function headInsert */
+func (linkedList *LinkedList) Prepend(data unsafe.Pointer) {
+	linkedList.HeadInsert(data)
+}
